@@ -1,37 +1,21 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import imagePlaceholder from '../images/placeholder.png'
 import { useForm } from "react-hook-form";
-import axios from 'axios';
-import { db } from '../firebase-config';
+import { db, signup } from '../firebase-config';
 import { collection, addDoc } from 'firebase/firestore';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 function Register() {
   const { register, formState: { errors }, handleSubmit } = useForm();
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
   const userCollectionRef = collection(db, 'users');
-  const [users, setUsers] = useState([]);
 
-  //create login auth
-  const createUserAuth = async (email, password) => {
-    const auth = getAuth();
-    await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log(userCredential.user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
-  }
-  //check if user data exist 
-  const getUsers = async () => {
-    const data = await getDocs(userCollectionRef);
-    setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-  }
+
   //save user data
-  const onSubmit = async (data) => {
+  const onRegister = async (data) => {
+    setLoading(true);
+    signup(data.email, data.password);  //create login auth
     await addDoc(userCollectionRef, {
       fullname: data.fullname,
       age: data.age,
@@ -42,7 +26,7 @@ function Register() {
       email: data.email,
       password: data.password,
     }).then(userCollectionRef => {
-      createUserAuth(data.email, data.password);
+      setLoading(false);
       setSuccess(true);
       setTimeout(() => setError(false), 3000);
       window.location.replace("/login");
@@ -51,9 +35,18 @@ function Register() {
       setError(true);
       setTimeout(() => setError(false), 4000);
     })
-  };
+  }
   return (
     <main className='bg-base-200 mt-60px'>
+      {
+        loading === true && (
+          <div className="alert alert-success mt-60px shadow-lg w-fit z-50 text-center text-white absolute top-0 right-0" >
+            <div><svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <progress class="progress w-56"></progress>
+            </div>
+          </div >
+        )
+      }
       {
         error === true && (
           <div className="alert alert-error mt-60px shadow-lg w-fit z-50 text-center text-white absolute top-0 right-0" >
@@ -72,11 +65,12 @@ function Register() {
           </div >
         )
       }
+
       <div className="hero-content">
         <h1 className="text-5xl font-bold">✍️Register now!</h1>
       </div>
       <div className="hero  bg-base-200">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onRegister)}>
           <div className="hero-content flex-col lg:flex-row-reverse">
             <div className="text-center lg:text-left">
               <div className="card">

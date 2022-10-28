@@ -3,7 +3,7 @@ import UserProfileSidebar from '../components/UserProfileSidebar'
 import scolar2 from '../images/scholar2.jpg'
 import { useParams } from "react-router-dom";
 import axios from 'axios';
-function Scholarship() {
+function Transfer() {
     const [scholarshipData, setScholarshipData] = useState();
     const params = useParams();
     useEffect(() => {
@@ -40,4 +40,4 @@ function Scholarship() {
     )
 }
 
-export default Scholarship
+export default Transfer

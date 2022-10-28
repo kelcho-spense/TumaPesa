@@ -104,26 +104,7 @@ function ProfileEdit() {
                                 </div>
                             </div>
                             <div className="card ">
-                                <div className='card-header'>
-                                    <div className="avatar grid">
-                                        <div className="w-24 mask mask-hexagon place-self-center" >
-                                            <label htmlFor="fileInput">
-                                                {
-                                                    file ? (
-                                                        <img
-                                                            className="cursor-pointer"
-                                                            src={URL.createObjectURL(file)}
-                                                            alt="invalid Imagefile😒"
-                                                        />
-                                                    ) : (
-                                                        <img className='cursor-pointer' src={PF + userData.profilepic} alt="invalid Imagefile😒" />
-                                                    )
-                                                }
-                                            </label>
-                                            <input type="file" id="fileInput" style={{ display: "none" }} onChange={(e) => setFile(e.target.files[0])} />
-                                        </div>
-                                    </div>
-                                </div>
+
                                 <div className="card-body md:flex-row sm:flex-col lg:flex-row">
                                     <div>
                                         <label className="label"><span className="label-text">Full Names</span></label>
@@ -132,9 +113,6 @@ function ProfileEdit() {
                                         <label className="label"><span className="label-text">Age</span></label>
                                         <input type="text" {...register("age", { required: true })} placeholder={userData?.age} className="input input-bordered" />
                                         {errors.age?.type === 'required' && <p className="label-text-alt text-red-400 pt-2">age is required 😶</p>}
-                                        <label className="label"><span className="label-text">GPA</span></label>
-                                        <input type="text" {...register("gpa", { required: true })} placeholder={userData?.gpa} className="input input-bordered" />
-                                        {errors.gpa?.type === 'required' && <p className="label-text-alt text-red-400 pt-2">gpa is required 😶</p>}
                                     </div>
                                     <div className='md:ml-4 lg:ml-4'>
                                         <label className="label"><span className="label-text">Gender</span></label>
@@ -148,14 +126,6 @@ function ProfileEdit() {
                                         <label className="label"><span className="label-text">Email</span></label>
                                         <input {...register("email", { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ })} type="text" placeholder={userData?.email} className="input input-bordered" />
                                         {errors.email?.type === 'required' && <p className="label-text-alt text-red-400 pt-2">email is required 😶</p>}{errors.email?.type === 'pattern' && <p className="label-text-alt text-red-400 pt-2">invalid email😶</p>}
-                                        <label className="label"><span className="label-text">Education level</span></label>
-                                        <select {...register("educationlevel", { required: true })} className="select select-bordered w-full max-w-xs">
-                                            <option selected disabled value="">{userData?.education_level}</option>
-                                            <option value="postgraduate">Postgraduate</option>
-                                            <option value="undergraduate">Undergraduate</option>
-                                            <option value="seniorsecondaryschool">Senior Secondary School</option>
-                                        </select>
-                                        {errors.educationlevel?.type === 'required' && <p className="label-text-alt text-red-400 pt-2">education level is required 😶</p>}
                                     </div>
                                 </div>
                                 <div className="form-control mt-3 grid">

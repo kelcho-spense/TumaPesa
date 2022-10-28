@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import UserProfileSidebar from '../components/UserProfileSidebar';
-import Scholarship from '../components/Scholarship';
+import Scholarship from '../components/Transfer';
 import axios from 'axios';
 
-function Scholarships() {
+function Transfers() {
     const [scholarships, setScholarships] = useState([]);
     useEffect(() => {
         return async () => {
@@ -29,4 +29,4 @@ function Scholarships() {
     )
 }
 
-export default Scholarships
+export default Transfers

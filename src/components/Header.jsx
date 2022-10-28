@@ -2,15 +2,24 @@ import { useContext } from 'react'
 import { FaHome, FaPencilAlt, FaSignInAlt, FaUser } from 'react-icons/fa';
 import { Link } from "react-router-dom";
 import { Context } from '../context/Context';
+import { getAuth, signOut } from "firebase/auth";
+
 import placeholder from '../images/placeholder.png';
 function Header() {
   const { user, dispatch } = useContext(Context);
+
   const handleLogout = () => {
-    dispatch({ type: "LOGOUT" });
-    window.location.replace("/")
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      dispatch({ type: "LOGOUT" });
+      window.location.replace("/")
+    }).catch((error) => {
+      console.log(error);
+    });
+
   }
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-base-100 shadow-lg">
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -22,6 +31,23 @@ function Header() {
               <Link to="/register" className='btn btn-ghost normal-case text-md'>Register</Link>
             </li>
             <li><Link to="/login" className='btn btn-ghost normal-case text-md'>Login</Link></li>
+            {
+              user && (
+                <li>
+                  <div className="dropdown dropdown-right">
+                    <label tabIndex={0} className="avatar">
+                      <FaUser className="w-10 rounded-full text-xl" />
+                    </label>
+                    <ul tabIndex={0} className="mt-10 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-30">
+                      <li><Link to={`/profile/${user?._id}`} className="justify-between">Profile</Link></li>
+                      <li><Link to={`/profile/update/${user?._id}`}>Settings</Link></li>
+                      <li><a href='#' onClick={handleLogout}>Logout</a></li>
+                    </ul>
+                  </div>
+                </li>
+
+              )
+            }
           </ul>
         </div>
         <Link className="btn btn-ghost normal-case text-xl" to="/">MpesaClone</Link>
@@ -34,11 +60,22 @@ function Header() {
         </ul>
       </div>
       <div className="navbar-end">
-        <div className="avatar">
-          <div className="w-10 rounded-full  ring-offset-base-100 ring-offset-2">
-            <img src={placeholder} />
-          </div>
-        </div>
+        {
+          user && (
+            <li>
+              <div className="dropdown dropdown-end">
+                <label tabIndex={0} className="avatar">
+                  <FaUser className="w-10 rounded-full text-xl" />
+                </label>
+                <ul tabIndex={0} className="mt-10 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-30">
+                  <li><Link to={`/profile/${user?._id}`} className="justify-between">Profile</Link></li>
+                  <li><Link to={`/profile/update/${user?._id}`}>Settings</Link></li>
+                  <li><a href='#' onClick={handleLogout}>Logout</a></li>
+                </ul>
+              </div>
+            </li>
+          )
+        }
       </div>
     </div>
   )

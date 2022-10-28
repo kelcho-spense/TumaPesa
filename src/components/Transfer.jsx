@@ -1,7 +1,7 @@
 import scholar1 from '../images/scholar1.jpg'
 import { Link } from 'react-router-dom';
 
-function Scholarship({ data }) {
+function Transfer({ data }) {
 
     return (
         <div className="card w-80 bg-base-200 shadow-xl">
@@ -20,4 +20,4 @@ function Scholarship({ data }) {
     )
 }
 
-export default Scholarship
+export default Transfer

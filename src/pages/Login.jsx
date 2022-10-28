@@ -1,59 +1,44 @@
 import { useState, useContext, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { Context } from '../context/Context';
-import login from "../images/Login.png";
-import { db } from '../firebase-config';
-import { collection, getDocs } from 'firebase/firestore';
+import loginimg from "../images/Login.png";
+import { login } from '../firebase-config';
 function Login() {
   const { register, formState: { errors }, handleSubmit } = useForm();
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { dispatch } = useContext(Context);
-  const [users, setUsers] = useState([]);
-  const userCollectionRef = collection(db, 'users');
 
-  useEffect(() => {
-    const getUsers = async () => {
-      const data = await getDocs(userCollectionRef);
-      setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    }
-    getUsers();
-  }, [register]);
+
   const onSubmit = async (data) => {
-    if (users) {
-      for (let index = 0; index < users.length; index++) {
-        const user = users[index];
-        if (user.username == data.username && user.password == data.password) {
-          console.log(user.username);
-          break;
-        }
-        setError(true);
-        setTimeout(() => setError(false), 3000);
-
-      }
-      // users.forEach(user => {
-      //   if (user.username == data.username && user.password == data.password) {
-      //     console.log(user.username);
-      //   }
-      // });
-      // setError(true);
-      // setTimeout(() => setError(false), 3000);
-      // try {
-      //   const res = await axios.post('/auth/login', data);
-      //   dispatch({ type: 'LOGIN_SUCCESS', payload: res?.data });
-      //   window.location.replace(`/profile/${res.data._id}`)
-      // } catch (error) {
-      //   dispatch({ type: 'LOGIN_FAILURE' });
-      //   setError(true);
-      //   setTimeout(() => setError(false), 3000);
-      // }
-    };
+    setLoading(true);
+    try {
+      await login(data.email, data.password);
+      console.log('login successful');
+      setLoading(false);
+      dispatch({ type: 'LOGIN_SUCCESS', payload: data });
+      window.location.replace(`/profile/${data.email}`)
+    } catch {
+      setLoading(false);
+      setError(true);
+      setTimeout(() => setError(false), 3000);
+    }
   };
   return (
     <div className='grid mt-60px'>
       {
+        loading === true && (
+          <div className="alert alert-success mt-60px shadow-lg w-fit z-50 text-center text-white absolute top-0 right-0" >
+            <div><svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <progress class="progress w-56"></progress>
+            </div>
+          </div >
+        )
+      }
+      {
         error === true && (
-          <div className="alert alert-error mt-60px shadow-lg w-fit z-50 text-center text-white absolute top-0 right-0" >
-            <div><span className='text-2xl'>😒</span>
+          <div className="alert alert-success mt-60px shadow-lg w-fit z-50 text-center text-white absolute top-0 right-0" >
+            <div><svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
               <span>Error! Wrong credentials</span>
             </div>
           </div >
@@ -69,10 +54,10 @@ function Login() {
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text text-xl">Username</span>
+                    <span className="label-text text-xl">Email</span>
                   </label>
-                  <input type="text" {...register("username", { required: true })} placeholder="Enter username" className="input input-warning input-lg input-bordered" />
-                  {errors.username?.type === 'required' && <p className="label-text-alt text-red-400 pt-2">username is required 😶</p>}
+                  <input {...register("email", { required: true, pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ })} type="text" placeholder="Enter your email" className="input input-bordered" />
+                  {errors.email?.type === 'required' && <p className="label-text-alt text-red-400 pt-2">email is required 😶</p>}{errors.email?.type === 'pattern' && <p className="label-text-alt text-red-400 pt-2">invalid email😶</p>}
                 </div>
                 <div className="form-control">
                   <label className="label">
@@ -92,7 +77,7 @@ function Login() {
           </div >
         </div>
         <div className="hero-content">
-          <img alt='no pic' src={login} className="max-w-lg rounded-lg shadow-2xl" />
+          <img alt='no pic' src={loginimg} className="max-w-lg rounded-lg shadow-2xl" />
         </div>
       </div>
     </div>

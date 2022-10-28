@@ -17,7 +17,7 @@ function Home() {
               <div>
                 <h1 className="text-5xl font-bold">Welcome to Tuma Pesa App</h1>
                 <p className="py-6">Tuma Pesa is a platform where thousands of users transfer funds with no limation...</p>
-                <button className="btn btn-outline btn-warning"><Link to="/register">Register To Get Started</Link></button>
+                <Link className="btn btn-outline btn-warning" to="/register">Register To Get Started</Link>
               </div>
             </div>
           </div>
@@ -38,7 +38,7 @@ function Home() {
                     <li>➡️Simple UI for friendly user experience </li>
                   </ul>
                 </div>
-                <button className="btn btn-secondary btn-outline"><Link to="/register">Register To Get Started</Link></button>
+                <Link className="btn btn-secondary btn-outline" to="/register">Register To Get Started</Link>
               </div>
             </div>
           </div>
@@ -55,7 +55,7 @@ function Home() {
               <div className="py-8 text-xl">
                 <h1 className="md:text-5xl font-bold sm:text-xl sm:pl-6 ">Hear from Kevin Comba</h1>
                 <p className="py-6 text-xl">‶ I joined this community, 2022 may after watching their advert on youtube.This has been my best platform to send and transfer funds to another client. Upon registering i was able to credit my account and transfer any amount of funds to any of my clients ie.<span className='badge text-lg text-yellow-500 font-bold mx-1 py-2'>$5,000 </span>.″</p>
-                <button className="btn btn-success btn-outline"><Link to="/register">Register To Get Started</Link></button>
+                <Link className="btn btn-success btn-outline" to="/register">Register To Get Started</Link>
               </div>
             </div>
           </div>
