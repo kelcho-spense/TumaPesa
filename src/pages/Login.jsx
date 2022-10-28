@@ -1,23 +1,52 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useForm } from "react-hook-form";
-import axios from 'axios';
 import { Context } from '../context/Context';
 import login from "../images/Login.png";
+import { db } from '../firebase-config';
+import { collection, getDocs } from 'firebase/firestore';
 function Login() {
   const { register, formState: { errors }, handleSubmit } = useForm();
   const [error, setError] = useState(false);
   const { dispatch } = useContext(Context);
+  const [users, setUsers] = useState([]);
+  const userCollectionRef = collection(db, 'users');
 
-  const onSubmit = async (data) => {
-    try {
-      const res = await axios.post('/auth/login', data);
-      dispatch({ type: 'LOGIN_SUCCESS', payload: res?.data });
-      window.location.replace(`/profile/${res.data._id}`)
-    } catch (error) {
-      dispatch({ type: 'LOGIN_FAILURE' });
-      setError(true);
-      setTimeout(() => setError(false), 3000);
+  useEffect(() => {
+    const getUsers = async () => {
+      const data = await getDocs(userCollectionRef);
+      setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     }
+    getUsers();
+  }, [register]);
+  const onSubmit = async (data) => {
+    if (users) {
+      for (let index = 0; index < users.length; index++) {
+        const user = users[index];
+        if (user.username == data.username && user.password == data.password) {
+          console.log(user.username);
+          break;
+        }
+        setError(true);
+        setTimeout(() => setError(false), 3000);
+
+      }
+      // users.forEach(user => {
+      //   if (user.username == data.username && user.password == data.password) {
+      //     console.log(user.username);
+      //   }
+      // });
+      // setError(true);
+      // setTimeout(() => setError(false), 3000);
+      // try {
+      //   const res = await axios.post('/auth/login', data);
+      //   dispatch({ type: 'LOGIN_SUCCESS', payload: res?.data });
+      //   window.location.replace(`/profile/${res.data._id}`)
+      // } catch (error) {
+      //   dispatch({ type: 'LOGIN_FAILURE' });
+      //   setError(true);
+      //   setTimeout(() => setError(false), 3000);
+      // }
+    };
   };
   return (
     <div className='grid mt-60px'>

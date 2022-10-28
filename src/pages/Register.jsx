@@ -2,43 +2,55 @@ import { useState } from 'react'
 import imagePlaceholder from '../images/placeholder.png'
 import { useForm } from "react-hook-form";
 import axios from 'axios';
+import { db } from '../firebase-config';
+import { collection, addDoc } from 'firebase/firestore';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 function Register() {
   const { register, formState: { errors }, handleSubmit } = useForm();
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [file, setFile] = useState(null);
-  const onSubmit = async (data) => {
-    try {
-      const newUser = {
-        fullname: data.fullname,
-        age: data.age,
-        gender: data.gender,
-        education_level: data.education_level,
-        gpa: data.gpa,
-        country: data.country,
-        username: data.username,
-        email: data.email,
-        password: data.password,
-      }
-      if (file) {
-        const data = new FormData();
-        const filename = Date.now() + file.name;
-        data.append("name", filename);
-        data.append("file", file);
-        newUser.profilepic = filename;
-        try {
-          await axios.post("/upload", data);
-        } catch (err) { }
-      }
+  const userCollectionRef = collection(db, 'users');
+  const [users, setUsers] = useState([]);
 
-      const res = await axios.post('/auth/register', newUser);
+  //create login auth
+  const createUserAuth = async (email, password) => {
+    const auth = getAuth();
+    await createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log(userCredential.user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+  }
+  //check if user data exist 
+  const getUsers = async () => {
+    const data = await getDocs(userCollectionRef);
+    setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  }
+  //save user data
+  const onSubmit = async (data) => {
+    await addDoc(userCollectionRef, {
+      fullname: data.fullname,
+      age: data.age,
+      gender: data.gender,
+      phoneNumber: data.phoneNumber,
+      country: data.country,
+      username: data.username,
+      email: data.email,
+      password: data.password,
+    }).then(userCollectionRef => {
+      createUserAuth(data.email, data.password);
       setSuccess(true);
       setTimeout(() => setError(false), 3000);
-      res.data && window.location.replace("/login");
-    } catch (error) {
+      window.location.replace("/login");
+    }).catch(error => {
+      console.log(error);
       setError(true);
       setTimeout(() => setError(false), 4000);
-    }
+    })
   };
   return (
     <main className='bg-base-200 mt-60px'>
@@ -73,16 +85,10 @@ function Register() {
                   <input type="text" {...register("username", { required: true })} placeholder="Enter username" className="input input-bordered input-md w-full max-w-xs" />
                   {errors.username?.type === 'required' && <p className="label-text-alt text-red-400 pt-2">username is required 😶</p>}
                   <label className="label"><span className="label-text">Password</span></label>
-                  <input {...register("password", { required: true })} type="password" placeholder="Enter password**" className="input input-bordered input-md w-full max-w-xs" />
+                  <input {...register("password", { required: true, minLength: 6 })} type="password" placeholder="Enter password**" className="input input-bordered input-md w-full max-w-xs" />
                   {errors.password?.type === 'required' && <p className="label-text-alt text-red-400 pt-2">password is required😶</p>}
-                  <label className="label"><span className="label-text">Country of residence</span></label>
-                  <select {...register("country", { required: true })} className="select select-bordered w-full max-w-xs">
-                    <option selected disabled value="">Select country of residence</option>
-                    <option value="kenya">Kenya</option>
-                    <option value="uganda">Uganda</option>
-                    <option value="tanzania">Tanzania</option>
-                  </select>
-                  {errors.country?.type === 'required' && <p className="label-text-alt text-red-400 pt-2">country is required😶</p>}
+                  {errors.password?.type === 'minLength' && <p className="label-text-alt text-red-400 pt-2">Password should be at least 6 characters😒</p>}
+
                 </div>
               </div>
             </div>
@@ -115,9 +121,15 @@ function Register() {
                   <label className="label"><span className="label-text">Age</span></label>
                   <input type="text" {...register("age", { required: true })} placeholder="Enter your age" className="input input-bordered" />
                   {errors.age?.type === 'required' && <p className="label-text-alt text-red-400 pt-2">age is required 😶</p>}
-                  <label className="label"><span className="label-text">GPA</span></label>
-                  <input type="text" {...register("gpa", { required: true })} placeholder="Enter your gpa" className="input input-bordered" />
-                  {errors.gpa?.type === 'required' && <p className="label-text-alt text-red-400 pt-2">gpa is required 😶</p>}
+
+                  <label className="label"><span className="label-text">Country of residence</span></label>
+                  <select {...register("country", { required: true })} className="select select-bordered w-full max-w-xs">
+                    <option selected disabled value="">Select country of residence</option>
+                    <option value="kenya">Kenya</option>
+                    <option value="uganda">Uganda</option>
+                    <option value="tanzania">Tanzania</option>
+                  </select>
+                  {errors.country?.type === 'required' && <p className="label-text-alt text-red-400 pt-2">country is required😶</p>}
                 </div>
                 <div className='md:ml-4 lg:ml-4'>
                   <label className="label"><span className="label-text">Gender</span></label>
@@ -131,14 +143,9 @@ function Register() {
                   <label className="label"><span className="label-text">Email</span></label>
                   <input {...register("email", { required: true, pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ })} type="text" placeholder="Enter your email" className="input input-bordered" />
                   {errors.email?.type === 'required' && <p className="label-text-alt text-red-400 pt-2">email is required 😶</p>}{errors.email?.type === 'pattern' && <p className="label-text-alt text-red-400 pt-2">invalid email😶</p>}
-                  <label className="label"><span className="label-text">Education level</span></label>
-                  <select {...register("education_level", { required: true })} className="select select-bordered w-full max-w-xs">
-                    <option selected disabled value="">Select education level</option>
-                    <option value="postgraduate">Postgraduate</option>
-                    <option value="undergraduate">Undergraduate</option>
-                    <option value="seniorsecondaryschool">Senior Secondary School</option>
-                  </select>
-                  {errors.education_level?.type === 'required' && <p className="label-text-alt text-red-400 pt-2">education level is required 😶</p>}
+                  <label className="label"><span className="label-text">Phone Number</span></label>
+                  <input type="text" {...register("phoneNumber", { required: true })} placeholder="Enter ie +254712547698" className="input w-full input-bordered" />
+                  {errors.phoneNumber?.type === 'required' && <p className="label-text-alt text-red-400 pt-2">phone number is required 😶</p>}
                 </div>
               </div>
               <div className="form-control mt-3 grid">

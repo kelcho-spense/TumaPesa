@@ -3,6 +3,7 @@ import slider2 from "../images/slider2.jpg"
 import slider1 from "../images/slider1.jpg"
 import slider3 from "../images/slider3.png"
 import slider4 from "../images/slider4.png"
+import kevin from "../images/kevin.png"
 import { Link } from 'react-router-dom';
 
 function Home() {
@@ -11,8 +12,8 @@ function Home() {
       <div className="carousel w-full h-fit">
         <div id="1" className="carousel-item relative w-full">
           <div className="hero min-h-screen bg-base-200">
-            <div className="hero-content flex-col lg:flex-row-reverse">
-              <img src={slider2} className="max-w-xl rounded-lg shadow-2xl" alt='no pic' />
+            <div className="hero-content flex-col lg:flex-row">
+              <img src={slider4} className="max-w-sm rounded-lg shadow-2xl" alt='no pic' />
               <div>
                 <h1 className="text-5xl font-bold">Welcome to Tuma Pesa App</h1>
                 <p className="py-6">Tuma Pesa is a platform where thousands of users transfer funds with no limation...</p>
@@ -20,8 +21,8 @@ function Home() {
               </div>
             </div>
           </div>
-          <div className="absolute flex justify-between transform -translate-y-1/2 left-0 right-2 top-1/2">
-            <a href="#2" className="btn btn-circle text-3xl">👈</a>
+          <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+            <a href="#3" className="btn btn-circle text-3xl">👈</a>
             <a href="#2" className="btn btn-circle text-3xl">👉</a>
           </div>
         </div>
@@ -33,12 +34,11 @@ function Home() {
                 <h1 className="text-5xl font-bold">Our Goals 🤝</h1>
                 <div className="py-6 text-xl">
                   <ul>
-                    <li>➡️Help needy students</li>
-                    <li>➡️Bring students' dreams closer</li>
-                    <li>➡️Create community a thriving community</li>
+                    <li>➡️Easy money transfer between Users</li>
+                    <li>➡️Simple UI for friendly user experience </li>
                   </ul>
                 </div>
-                <button className="btn btn-info btn-outline"><Link to="/register">Register To Get Started</Link></button>
+                <button className="btn btn-secondary btn-outline"><Link to="/register">Register To Get Started</Link></button>
               </div>
             </div>
           </div>
@@ -47,35 +47,20 @@ function Home() {
             <a href="#3" className="btn btn-circle text-3xl">👉</a>
           </div>
         </div>
+
         <div id="3" className="carousel-item relative w-full">
-          <div className="hero min-h-screen bg-base-200">
+          <div className="hero min-h-screen bg-base-200 sm:justify-center">
             <div className="hero-content flex-col lg:flex-row">
-              <img src={slider1} className="max-w-sm rounded-lg shadow-2xl" alt='no pic' />
-              <div>
-                <h1 className="text-5xl font-bold">Hear from Kevin Comba</h1>
-                <p className="py-6 text-xl">I joined Udhamini community, 2022 january after hearing the benefits from a friend.I had a huge school balance which my parents were struggling with. Upon registering i was able to go through various available scolarships and luckily I was able to get <span className='badge text-lg text-yellow-500 font-bold mx-1 py-2'>$10,000 </span>funded my school fees</p>
-                <button className="btn btn-info btn-outline"><Link to="/register">Register To Get Started</Link></button>
+              <img src={kevin} className="sm:max-w-lg  rounded-lg shadow-2xl" alt='no pic' />
+              <div className="py-8 text-xl">
+                <h1 className="md:text-5xl font-bold sm:text-xl sm:pl-6 ">Hear from Kevin Comba</h1>
+                <p className="py-6 text-xl">‶ I joined this community, 2022 may after watching their advert on youtube.This has been my best platform to send and transfer funds to another client. Upon registering i was able to credit my account and transfer any amount of funds to any of my clients ie.<span className='badge text-lg text-yellow-500 font-bold mx-1 py-2'>$5,000 </span>.″</p>
+                <button className="btn btn-success btn-outline"><Link to="/register">Register To Get Started</Link></button>
               </div>
             </div>
           </div>
           <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
             <a href="#2" className="btn btn-circle text-3xl">👈</a>
-            <a href="#4" className="btn btn-circle text-3xl">👉</a>
-          </div>
-        </div>
-        <div id="4" className="carousel-item relative w-full">
-          <div className="hero min-h-screen bg-base-200">
-            <div className="hero-content flex-col lg:flex-row">
-              <img src={slider4} className="max-w-sm h-sm rounded-lg shadow-2xl" alt='no pic' />
-              <div>
-                <h1 className="text-5xl font-bold">Hear from Denis Wachira</h1>
-                <p className="py-6 text-xl">‶ I joined Udhamini community, 2021 may after watching their advert on youtube.My parents were struggling with my fourth year school fees. Upon registering i was able aquire a scolarship worth <span className='badge text-lg text-yellow-500 font-bold mx-1 py-2'>$5,000 </span>funded my school fees. Currently am a software engineer in Microsoft. ″</p>
-                <button className="btn btn-info btn-outline"><Link to="/register">Register To Get Started</Link></button>
-              </div>
-            </div>
-          </div>
-          <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-            <a href="#3" className="btn btn-circle text-3xl">👈</a>
             <a href="#1" className="btn btn-circle text-3xl">👉</a>
           </div>
         </div>
