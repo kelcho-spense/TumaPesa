@@ -31,6 +31,8 @@ function Header() {
               <Link to="/register" className='btn btn-ghost normal-case text-md'>Register</Link>
             </li>
             <li><Link to="/login" className='btn btn-ghost normal-case text-md'>Login</Link></li>
+            <li><Link to={`/profile/${user.email}`} className='btn btn-ghost normal-case text-md'>Profile</Link></li>
+            <li><Link to={`/profile/transfer/${user.email}`} className='btn btn-ghost normal-case text-md'>Transfer Funds</Link></li>
             {
               user && (
                 <li>
