@@ -8,8 +8,6 @@ import Profile from './pages/Profile';
 import ProfileEdit from './pages/ProfileEdit';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Transfers from "./pages/Transfers";
-import Transfer from "./pages/Transfer";
 import { Context } from "./context/Context";
 function App() {
   const {user} = useContext(Context);
@@ -23,9 +21,7 @@ function App() {
          <Route path="about" element={<About />} />
          <Route path="register" element={<Register />} />
          <Route path="login" element={<Login />} />
-         <Route path="profile/:userId" element={user ? <Profile /> : <Home/>} />
-         <Route path="profile/transfer/:userId" element={user ? <Transfers /> : <Home />} />/profile/Transfer/124214
-         <Route path="profile/transfer/single/:transferId" element={user ? <Transfer /> : <Home />} />/profile/Transfer/s=124214
+         <Route path="profile/:userId" element={user ? <Profile /> : <Home/>} /> /profile/Transfer/s=124214
          <Route path="profile/update/:userId" element={user ? <ProfileEdit/> : <Home />} />
          <Route path="*" 
               element={

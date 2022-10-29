@@ -1,6 +1,4 @@
 import React from 'react';
-import slider2 from "../images/slider2.jpg"
-import slider1 from "../images/slider1.jpg"
 import slider3 from "../images/slider3.png"
 import slider4 from "../images/slider4.png"
 import kevin from "../images/kevin.png"

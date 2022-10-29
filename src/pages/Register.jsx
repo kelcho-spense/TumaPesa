@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import imagePlaceholder from '../images/placeholder.png'
 import { useForm } from "react-hook-form";
 import { db, signup } from '../firebase-config';
@@ -14,27 +14,31 @@ function Register() {
 
   //save user data
   const onRegister = async (data) => {
-    setLoading(true);
-    signup(data.email, data.password);  //create login auth
-    await addDoc(userCollectionRef, {
-      fullname: data.fullname,
-      age: data.age,
-      gender: data.gender,
-      phoneNumber: data.phoneNumber,
-      country: data.country,
-      username: data.username,
-      email: data.email,
-      password: data.password,
-    }).then(userCollectionRef => {
+    try {
+      setLoading(true);
+      await addDoc(userCollectionRef, {
+        fullname: data.fullname,
+        age: data.age,
+        gender: data.gender,
+        phoneNumber: data.phoneNumber,
+        country: data.country,
+        username: data.username,
+        email: data.email,
+        balance: 450,
+        password: data.password,
+      });
+      await signup(data.email, data.password);
       setLoading(false);
       setSuccess(true);
       setTimeout(() => setError(false), 3000);
       window.location.replace("/login");
-    }).catch(error => {
+
+    } catch (error) {
       console.log(error);
       setError(true);
       setTimeout(() => setError(false), 4000);
-    })
+    }
+
   }
   return (
     <main className='bg-base-200 mt-60px'>
@@ -42,7 +46,7 @@ function Register() {
         loading === true && (
           <div className="alert alert-success mt-60px shadow-lg w-fit z-50 text-center text-white absolute top-0 right-0" >
             <div><svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              <progress class="progress w-56"></progress>
+              <progress className="progress w-56"></progress>
             </div>
           </div >
         )
@@ -59,7 +63,7 @@ function Register() {
       {
         success === true && (
           <div className="alert alert-success mt-60px shadow-lg w-fit z-50 text-center text-white absolute top-0 right-0" >
-            <div><svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <div><svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
               <span>Registration Success!</span>
             </div>
           </div >
@@ -118,7 +122,7 @@ function Register() {
 
                   <label className="label"><span className="label-text">Country of residence</span></label>
                   <select {...register("country", { required: true })} className="select select-bordered w-full max-w-xs">
-                    <option selected disabled value="">Select country of residence</option>
+                    <option disabled value="">Select country of residence</option>
                     <option value="kenya">Kenya</option>
                     <option value="uganda">Uganda</option>
                     <option value="tanzania">Tanzania</option>
@@ -128,7 +132,7 @@ function Register() {
                 <div className='md:ml-4 lg:ml-4'>
                   <label className="label"><span className="label-text">Gender</span></label>
                   <select {...register("gender", { required: true })} className="select select-bordered w-full max-w-xs">
-                    <option selected disabled value="" >Select your gender</option>
+                    <option disabled value="" >Select your gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Other</option>

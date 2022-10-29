@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { useForm } from "react-hook-form";
 import { Context } from '../context/Context';
 import loginimg from "../images/Login.png";
@@ -30,7 +30,7 @@ function Login() {
         loading === true && (
           <div className="alert alert-success mt-60px shadow-lg w-fit z-50 text-center text-white absolute top-0 right-0" >
             <div><svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              <progress class="progress w-56"></progress>
+              <progress className="progress w-56"></progress>
             </div>
           </div >
         )

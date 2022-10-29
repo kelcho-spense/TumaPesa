@@ -3,44 +3,16 @@ import { FaUser, FaCog, FaMoneyCheckAlt } from 'react-icons/fa'
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Context } from '../context/Context';
-import { db } from '../firebase-config';
-import { collection, addDoc } from 'firebase/firestore';
 
-function UserProfileSidebar() {
+function UserProfileSidebar({ userData, userDataId }) {
     const { user } = useContext(Context);
     const { register, formState: { errors }, handleSubmit } = useForm();
-    const userCollectionRef = collection(db, 'users');
-
     //save user data
     const onTransfer = async (data) => {
-        await addDoc(userCollectionRef, {
-            fullname: data.fullname,
-            age: data.age,
-            gender: data.gender,
-            phoneNumber: data.phoneNumber,
-            country: data.country,
-            username: data.username,
-            email: data.email,
-            password: data.password,
-        }).then(userCollectionRef => {
-            window.location.replace("/login");
-        }).catch(error => {
-        })
+        console.log(data);
     }
     const onCredit = async (data) => {
-        await addDoc(userCollectionRef, {
-            fullname: data.fullname,
-            age: data.age,
-            gender: data.gender,
-            phoneNumber: data.phoneNumber,
-            country: data.country,
-            username: data.username,
-            email: data.email,
-            password: data.password,
-        }).then(userCollectionRef => {
-            window.location.replace("/login");
-        }).catch(error => {
-        })
+        console.log(data);
     }
 
     return (
@@ -66,8 +38,8 @@ function UserProfileSidebar() {
                         <input type="text" {...register("phoneNumber", { required: true })} placeholder="Enter ie +254712547698" className="input w-full input-bordered" />
                         {errors.phoneNumber?.type === 'required' && <p className="label-text-alt text-red-400 pt-2">phone number is required 😶</p>}
                         <label className="label"><span className="label-text">Amount</span></label>
-                        <input type="number" {...register("amount", { required: true })} placeholder="Enter ie $2" className="input w-full input-bordered" />
-                        {errors.amount?.type === 'required' && <p className="label-text-alt text-red-400 pt-2">amount is required 😶</p>}
+                        <input type="number" {...register("sendamount", { required: true })} placeholder="Enter ie $2" className="input w-full input-bordered" />
+                        {errors.sendamount?.type === 'required' && <p className="label-text-alt text-red-400 pt-2">amount is required 😶</p>}
                         <div className="form-control mt-3 grid">
                             <button type="submit" className="btn btn-outline max-w-sm place-self-center w-[3/4]">Register</button>
                         </div>
@@ -79,6 +51,7 @@ function UserProfileSidebar() {
             <div className="modal">
                 <div className="modal-box relative">
                     <form onSubmit={handleSubmit(onCredit)}>
+                        <label htmlFor="my-modal-2" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
                         <div className="form-control mt-3 grid">
                             <label className="label"><span className="label-text">Credit my Account Via Mpesa</span></label>
                         </div>
