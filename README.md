@@ -1,2 +1,2 @@
 # This is a webapp called TumaPesa App
-The new Webapp allows you to  Transfer money within the systems to others customer registered to the app. You can also check your account balance and view your transaction history.
+The new Webapp allows you to  Transfer money within the systems to others customer registered to the app. You can also check your account balance and view your transaction.
