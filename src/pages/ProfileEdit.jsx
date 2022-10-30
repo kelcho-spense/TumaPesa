@@ -56,6 +56,8 @@ function ProfileEdit() {
                 username: data.username,
                 phoneNumber: data.phoneNumber,
                 password: data.password,
+                balance: 450,
+                email: data.email,
             }
             setLoading(false);
             await setDoc(userRef, newData)
