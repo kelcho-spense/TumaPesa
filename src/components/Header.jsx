@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { FaHome, FaPencilAlt, FaSignInAlt, FaUser, FaKey } from 'react-icons/fa';
+import { FaHome, FaPencilAlt, FaUser, FaKey } from 'react-icons/fa';
 import { Link } from "react-router-dom";
 import { Context } from '../context/Context';
 import { getAuth, signOut } from "firebase/auth";
@@ -31,8 +31,8 @@ function Header() {
               <Link to="/register" className='btn btn-ghost normal-case text-md'>Register</Link>
             </li>
             <li><Link to="/login" className='btn btn-ghost normal-case text-md'>Login</Link></li>
-            <li><Link to={`/profile/${user.email}`} className='btn btn-ghost normal-case text-md'>Profile</Link></li>
-            <li><Link to={`/profile/transfer/${user.email}`} className='btn btn-ghost normal-case text-md'>Transfer Funds</Link></li>
+            <li><Link to={`/profile/${user?.email}`} className='btn btn-ghost normal-case text-md'>Profile</Link></li>
+            <li><Link to={`/profile/transfer/${user?.email}`} className='btn btn-ghost normal-case text-md'>Transfer Funds</Link></li>
             {
               user && (
                 <li>

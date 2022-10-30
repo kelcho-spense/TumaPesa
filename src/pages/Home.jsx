@@ -45,7 +45,6 @@ function Home() {
             <a href="#3" className="btn btn-circle text-3xl">👉</a>
           </div>
         </div>
-
         <div id="3" className="carousel-item relative w-full">
           <div className="hero min-h-screen bg-base-200 sm:justify-center">
             <div className="hero-content flex-col lg:flex-row">

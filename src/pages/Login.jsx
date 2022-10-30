@@ -46,7 +46,7 @@ function Login() {
       }
       <div className="hero-content flex-col lg:flex-row-reverse justify-around">
         <div className="hero-content">
-          < div className="card flex-shrink-0 w-full max-w-sm shadow-4xl p-2 bg-base-200 place-self-center" >
+          <div className="card flex-shrink-0 w-full max-w-sm shadow-4xl p-2 bg-base-200 place-self-center" >
             <div className="card-header">
               <h1 className="text-5xl font-bold  px-2">Login🔐</h1>
             </div>

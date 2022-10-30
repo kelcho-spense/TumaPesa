@@ -13,8 +13,8 @@ const firebaseConfig = {
  // Initialize Firebase
  const app = initializeApp(firebaseConfig);
  export const db = getFirestore(app);
-
  const auth = getAuth();
+ 
   export const login = async (email, password) => {
     return await signInWithEmailAndPassword(auth, email, password);
   }
